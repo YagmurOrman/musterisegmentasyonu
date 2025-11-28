@@ -16,16 +16,16 @@ import warnings
 import warnings
 warnings.filterwarnings("ignore")
 
-df = pd.read_csv(r"C:\Users\irem\PycharmProjects\musterisegmentasyonu\Mall_Customers.csv")
+df = pd.read_csv("Mall_Customers.csv")
 
-df.head()
-print(df.shape)
+print("Veri Setinin Ýlk 5 Örneði: \n", df.head(5))
+print("Veri Setinin Þekli: \n", df.shape)
 
 df.rename(columns={"Genre":"Gender"}, inplace=True)
 
-df.info()
-df.describe()
-df.isnull().sum()
+print(df.info())
+print(df.describe())
+print(df.isnull().sum())
 
 plt.figure(figsize=(10,6))
 plt.subplot(1,2,1)
@@ -144,6 +144,7 @@ df_scaled_fit.columns = ["Age","Annual Income (k$)","Spending Score (1-100)"]
 df_scaled_fit.head()
 var_list = df_scaled_fit[["Annual Income (k$)","Spending Score (1-100)"]]
 
+# Model Eðitimi
 ssd = []
 
 for num_clusters in range(1, 11):
@@ -272,7 +273,7 @@ IQR = Q3 - Q1
 ust_sinir = Q3 + 1.5 * IQR
 df.loc[df['Annual Income (k$)'] > ust_sinir, 'Annual Income (k$)'] = ust_sinir
 
-print("--- Veri Yuklendi, Gender Duzeltildi, Aykiri Degerler Temizlendi ---")
+print("--- Veri Yüklendi, Gender Düzeltildi, Aykýrý Deðerler Temizlendi ---")
 
 
 # ==================================================================
@@ -305,7 +306,7 @@ df_scaled_fit = scaler.fit_transform(df_scaled)
 # Kumeleme icin sadece Gelir ve Skor kullanilacak
 X_cluster = pd.DataFrame(df_scaled_fit, columns=["Age","Annual Income (k$)","Spending Score (1-100)"])[["Annual Income (k$)","Spending Score (1-100)"]]
 
-print("--- Veri Olceklendirildi (Scaling) ---")
+print("--- Veri Ölçeklendirildi (Scaling) ---")
 
 
 # Elbow curve sonucuna gore K=5 secilir
@@ -356,11 +357,12 @@ else:
 skorlar_sil_values = [skorlar_sil[m] for m in modeller_kume]
 skorlar_db_values = [skorlar_db[m] for m in modeller_kume]
 
+
 # 1. SILHOUETTE SKORU (Buyuk daha iyi)
-plt.figure(figsize=(14, 6)) # Grafik boyutunu 3 algoritmaya gore kuculttuk
+plt.figure(figsize=(14, 6))
 plt.subplot(1, 2, 1)
 sns.barplot(x=modeller_kume, y=skorlar_sil_values, palette='viridis')
-plt.title('Silhouette Skor Karsilastirmasi (Buyuk Daha Iyi)')
+plt.title('Silhouette Skor Karþýlaþtýrmasý (Büyük olmasý daha iyi)')
 plt.ylabel('Silhouette Skoru')
 plt.tight_layout()
 
@@ -368,12 +370,12 @@ plt.tight_layout()
 # 2. DAVIES-BOULDIN SKORU (Kucuk Daha iyi)
 plt.subplot(1, 2, 2)
 sns.barplot(x=modeller_kume, y=skorlar_db_values, palette='plasma')
-plt.title('Davies-Bouldin Skor Karsilastirmasi (Kucuk Daha Iyi)')
+plt.title('Davies-Bouldin Skor Karþýlaþtýrmasý (Küçük olmasý daha iyi)')
 plt.ylabel('Davies-Bouldin Skoru')
 plt.savefig('Kumeleme_Iki_Metrik_Karsilastirma.png')
 plt.tight_layout()
 plt.show()
 
 print("\n*** TUM KUMELEME ALGORITMALARI KARSILASTIRILDI. ***")
-print(f"\nSilhouette Skorlari: {skorlar_sil}")
-print(f"Davies-Bouldin Skorlari: {skorlar_db} icermektedir.")
+print(f"\nSilhouette Skorlarý: {skorlar_sil}")
+print(f"Davies-Bouldin Skorlarý: {skorlar_db} içermektedir.")
