@@ -18,7 +18,7 @@ from sklearn.preprocessing import LabelEncoder
 import warnings
 warnings.filterwarnings("ignore")
 
-df = pd.read_csv(r"C:\Users\Lenovo\Desktop\Musteri_Segmentasyon\Mall_Customers.csv")
+df = pd.read_csv("Mall_Customers.csv")
 
 print("Veri Setinin Ilk 5 Örnegi: \n", df.head(5))
 print("Veri Setinin Sekli: \n", df.shape)
